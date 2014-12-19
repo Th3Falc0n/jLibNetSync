@@ -1,0 +1,45 @@
+file('build.properties').withReader {
+    def prop = new Properties()
+    prop.load it
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+
+version = config.version
+group = config.group
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+}
+
+jar {
+    manifest {
+        if (!config.mainClass.isEmpty()) attributes "Main-Class": config.mainClass
+    }
+}
+
+task testJar(type: Jar, dependsOn: javadoc) {
+    from sourceSets.main.output
+    from sourceSets.test.output
+    classifier = 'test'
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from 'build/docs/javadoc'
+    classifier = 'javadoc'
+}
+
+build.dependsOn testJar, sourceJar, javadocJar
