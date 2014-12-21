@@ -3,6 +3,7 @@
 *.java text eol=lf
 *.groovy text eol=lf
 *.scala text eol=lf
+*.aj text eol=lf
 *.sh text eol=lf
 *.bat text eol=crlf
 *.md text
