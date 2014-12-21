@@ -4,7 +4,21 @@ file('build.properties').withReader {
     project.ext.config = new ConfigSlurper().parse prop
 }
 
+buildscript {
+    repositories {
+        maven {
+            url "https://maven.eveoh.nl/content/repositories/releases"
+        }
+    }
+    dependencies {
+        classpath "nl.eveoh:gradle-aspectj:1.5"
+    }
+}
+
+project.ext.aspectjVersion = config.version_aspectj
+
 apply plugin: 'java'
+apply plugin: 'aspectj'
 apply plugin: 'idea'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
@@ -18,9 +32,7 @@ repositories {
 }
 
 dependencies {
-    compile([group: 'org.apache.commons', name: 'commons-lang3', version: config.version_commons_lang],
-            [group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.2'],
-            [group: 'org.aspectj', name: 'aspectjrt', version: '1.8.2'])
+    compile([group: 'org.apache.commons', name: 'commons-lang3', version: config.version_commons_lang])
 }
 
 jar {
