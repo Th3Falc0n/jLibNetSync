@@ -4,12 +4,12 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.jLibNetSync.annotations.CallSynced;
 
 public aspect SyncedObjectListener {
-    pointcut methodCall(): call(* UpdatedObject.*(*));
+    pointcut methodCall(): call(* LNSObject.*(*));
     
     before(): methodCall() {
         if (((MethodSignature)thisJoinPoint.getSignature()).getMethod().isAnnotationPresent(CallSynced.class)
-           && ((UpdatedObject)thisJoinPoint.getTarget()).isSynchronized()) {
-            CallListener listener = ((UpdatedObject)thisJoinPoint.getTarget()).getAssignedCallListener();
+           && ((LNSObject)thisJoinPoint.getTarget()).isSynchronized()) {
+            CallListener listener = ((LNSObject)thisJoinPoint.getTarget()).getAssignedCallListener();
             
             EncapsulatedMethodCall methodCall = new EncapsulatedMethodCall();
         }

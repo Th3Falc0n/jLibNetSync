@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObjectManager {
-    private List<UpdatedObject> objects = new ArrayList<>();
-    private List<UpdatedObject> temporaryObjects = new ArrayList<>();
-    private List<UpdatedObject> localObjects = new ArrayList<>();
+    private List<LNSObject> objects = new ArrayList<>();
+    private List<LNSObject> temporaryObjects = new ArrayList<>();
+    private List<LNSObject> localObjects = new ArrayList<>();
     
     private boolean isClientSide = true;
     private int nextID = 0;
     
-    public UpdatedObject registerObject(UpdatedObject object) {   
+    public LNSObject registerObject(LNSObject object) {   
         boolean local = !object.isSynchronized();
         
         int id = -1;
@@ -20,16 +20,18 @@ public class ObjectManager {
             id = nextID++;
         }
         
-        object.doFactoryInit(id, this);
+        object.doFactoryInit(id, this); //TODO  HOWTO ACCESS ASSIGNED ENCAPSULATED METHOD CALL? :(((
         
         if(local && isClientSide) {
             localObjects.add(object);
         } else if(isClientSide) {
             temporaryObjects.add(object);
+            
+            //TODO: Save EncapsulatedMethodCall.id for later removal
         } else {
             objects.add(object);
             
-            //TODO: post and shit
+            //TODO: Send object creation and all references to clients
         }
         
         return object;

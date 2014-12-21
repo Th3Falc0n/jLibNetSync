@@ -1,9 +1,10 @@
 package org.jLibNetSync;
 
-public abstract class UpdatedObject {
+public abstract class LNSObject {
     private int objectID = -1;
     private ObjectManager objectManager = null;
     private boolean factoryInitDone = false;
+    private EncapsulatedMethodCall origin = null;
     
     protected final int getObjectID() {
         return objectID;
@@ -13,10 +14,11 @@ public abstract class UpdatedObject {
         return objectManager;
     }
     
-    protected final boolean doFactoryInit(int id, ObjectManager objMan) {
+    protected final boolean doFactoryInit(int id, ObjectManager objMan, EncapsulatedMethodCall o) {
         if(!factoryInitDone) {
             objectID = id;
             objectManager = objMan;
+            origin = o;
             
             factoryInitDone = true;
             return true;
@@ -36,5 +38,11 @@ public abstract class UpdatedObject {
         return true;
     }
     
-    public abstract void update(float delta);
+    public boolean doUpdateLoop() {
+        return false;
+    }
+    
+    public void update(float delta) {
+        return;
+    }
 }
